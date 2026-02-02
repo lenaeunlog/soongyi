@@ -1311,7 +1311,6 @@ function AppInner() {
   ); 
 export default function App() {
   return (
-    }
     <ErrorBoundary>
       <AppInner />
     </ErrorBoundary>
