@@ -1,10 +1,31 @@
-* {
+/* --- BASELINE: 전역 충돌 방지 --- */
+:root { color-scheme: light; }
+
+*, *::before, *::after {
   box-sizing: border-box;
 }
 
-body {
+html, body {
+  height: 100%;
   margin: 0;
   padding: 0;
-  font-family: serif;
+  width: 100%;
+  font-size: 16px;
+  line-height: 1.4;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  transform: none !important;
+  zoom: 1 !important;
+
+  /* 은영님 앱 기본 배경/폰트 */
+  font-family: system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
   background: #f3e9dc;
+}
+
+button, input, select, textarea {
+  font: inherit;
 }
