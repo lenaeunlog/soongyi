@@ -1308,12 +1308,3 @@ function AppInner() {
     </div>
   );
 }
-
-export default function App() {
-  return (
-    <ErrorBoundary>
-      const MAX_DAYS = 7;
-      <AppInner />
-    </ErrorBoundary>
-  );
-}
