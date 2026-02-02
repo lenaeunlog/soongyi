@@ -1308,8 +1308,10 @@ function AppInner() {
         </div>
       )}
     </div>
+         </div>
   );
-  } 
+}
+
 export default function App() {
   return (
     <ErrorBoundary>
