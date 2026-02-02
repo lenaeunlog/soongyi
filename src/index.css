@@ -1,13 +1,10 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-/* 기본 리셋 */
 * {
   box-sizing: border-box;
 }
 
-html, body, #root {
-  height: 100%;
+body {
   margin: 0;
+  padding: 0;
+  font-family: serif;
+  background: #f3e9dc;
 }
