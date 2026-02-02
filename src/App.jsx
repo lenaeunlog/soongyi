@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
-  Crown, HelpCircle, X, Coins, BookOpen,
-  GraduationCap, UtensilsCrossed, Waves, ScrollText
+  Crown, HelpCircle, X, Coins,
+  BookOpen, GraduationCap, UtensilsCrossed,
+  Waves, ScrollText
 } from "lucide-react";
 
 // ---------------- Error Boundary ----------------
@@ -30,7 +31,7 @@ class ErrorBoundary extends React.Component {
   }
 }
 
-// ---------------- Components ----------------
+// ---------------- Mini Components ----------------
 
 const Soongyi = ({ size = "text-6xl" }) => (
   <div className={`${size} select-none`}>
@@ -55,25 +56,83 @@ function StatBar({ label, value, color }) {
   );
 }
 
+// ---------------- Flower Petal ----------------
+
+const Petal = ({ style }) => (
+  <div style={style} className="absolute animate-fall">
+    🌸
+  </div>
+);
+
 // ---------------- Main App ----------------
 
 function AppInner() {
 
   const [screen, setScreen] = useState("start");
   const [showTutorial, setShowTutorial] = useState(false);
+  const audioRef = useRef(null);
 
   const [stats] = useState({
-    intellect: 35,
-    fluency: 25,
+    intellect: 40,
+    fluency: 30,
     energy: 70,
     gold: 120
   });
 
+  // 꽃잎 생성
+  const petals = Array.from({ length: 30 }).map((_, i) => ({
+    id: i,
+    left: Math.random() * 100,
+    delay: Math.random() * 5,
+    duration: 6 + Math.random() * 4
+  }));
+
+  const handleStart = () => {
+    setScreen("play");
+    audioRef.current.volume = 0.6;
+    audioRef.current.play().catch(() => {});
+  };
+
   return (
-    <div className="w-full h-screen bg-[#f3e9dc] flex items-center justify-center">
+    <div className="w-full h-screen bg-[#f3e9dc] flex items-center justify-center relative overflow-hidden">
+
+      {/* BACKGROUND MUSIC */}
+      <audio
+        ref={audioRef}
+        loop
+        preload="auto"
+        src="https://storage.googleapis.com/eunyeongsmusicfiles/Handel%20Water%20Music.mp3"
+      />
+
+      {/* PETAL STYLE */}
+      <style>{`
+        @keyframes fall {
+          0% { transform: translateY(-10vh) rotate(0deg); opacity: 0 }
+          20% { opacity: 1 }
+          100% { transform: translateY(110vh) rotate(360deg); opacity: 0 }
+        }
+        .animate-fall {
+          animation-name: fall;
+          animation-timing-function: linear;
+          animation-iteration-count: infinite;
+          font-size: 22px;
+        }
+      `}</style>
+
+      {/* PETALS */}
+      {screen === "start" && petals.map(p => (
+        <Petal
+          key={p.id}
+          style={{
+            left: `${p.left}%`,
+            animationDuration: `${p.duration}s`,
+            animationDelay: `${p.delay}s`
+          }}
+        />
+      ))}
 
       {/* MAIN FRAME */}
-      <div className="w-full max-w-5xl bg-[#fffdfa] rounded-[3rem] shadow-2xl flex flex-col overflow-hidden">
+      <div className="w-full max-w-5xl bg-[#fffdfa] rounded-[3rem] shadow-2xl flex flex-col overflow-hidden z-10">
 
         {/* HEADER */}
         <div className="h-14 bg-[#d4af37] flex items-center justify-between px-6">
@@ -93,21 +152,27 @@ function AppInner() {
         </div>
 
         {/* CONTENT */}
-        <div className="flex-1 bg-[#fdf5e6] p-6 flex flex-col">
+        <div
+          className="flex-1 p-6 flex flex-col bg-cover bg-center"
+          style={{
+            backgroundImage:
+              "url('https://storage.googleapis.com/eunyeongsmusicfiles/beautiful-castle-architecture.jpg')"
+          }}
+        >
 
-          {/* START SCREEN */}
+          {/* START */}
           {screen === "start" && (
-            <div className="flex-1 flex flex-col items-center justify-center gap-8">
+            <div className="flex-1 flex flex-col items-center justify-center gap-8 bg-white/80 rounded-3xl">
 
-              <h1 className="text-5xl font-black text-purple-800">
+              <h1 className="text-5xl font-black text-purple-900">
                 Training Soongsoongyi
               </h1>
 
               <Soongyi size="text-9xl" />
 
               <button
-                onClick={() => setScreen("play")}
-                className="bg-purple-700 text-white px-10 py-5 rounded-full text-xl font-black shadow-lg"
+                onClick={handleStart}
+                className="bg-purple-700 text-white px-12 py-5 rounded-full text-xl font-black shadow-xl hover:scale-105"
               >
                 START PROTOCOL
               </button>
@@ -115,11 +180,11 @@ function AppInner() {
             </div>
           )}
 
-          {/* PLAY SCREEN */}
+          {/* PLAY */}
           {screen === "play" && (
-            <div className="flex flex-1 gap-6">
+            <div className="flex flex-1 gap-6 bg-white/90 rounded-3xl p-6">
 
-              {/* LEFT PANEL */}
+              {/* LEFT */}
               <div className="w-64 bg-white rounded-3xl p-4 shadow-xl flex flex-col gap-4">
 
                 <div className="text-center">
@@ -144,7 +209,7 @@ function AppInner() {
 
               </div>
 
-              {/* MAIN ACTION AREA */}
+              {/* CENTER */}
               <div className="flex-1 bg-white rounded-3xl p-6 shadow-xl">
 
                 <h2 className="text-3xl font-black mb-4">
@@ -155,22 +220,22 @@ function AppInner() {
 
                   <div className="bg-[#fdf5e6] p-6 rounded-2xl shadow text-center">
                     <BookOpen className="mx-auto mb-2" />
-                    <div className="font-bold">Elite Literature</div>
+                    Elite Literature
                   </div>
 
                   <div className="bg-[#fdf5e6] p-6 rounded-2xl shadow text-center">
                     <GraduationCap className="mx-auto mb-2" />
-                    <div className="font-bold">Royal Rhetoric</div>
+                    Royal Rhetoric
                   </div>
 
                   <div className="bg-[#fdf5e6] p-6 rounded-2xl shadow text-center">
                     <UtensilsCrossed className="mx-auto mb-2" />
-                    <div className="font-bold">Imperial Cafe</div>
+                    Imperial Cafe
                   </div>
 
                   <div className="bg-[#fdf5e6] p-6 rounded-2xl shadow text-center">
                     <Waves className="mx-auto mb-2" />
-                    <div className="font-bold">Celestial Spa</div>
+                    Celestial Spa
                   </div>
 
                 </div>
@@ -184,12 +249,11 @@ function AppInner() {
 
       </div>
 
-      {/* ------------------ TUTORIAL ------------------ */}
-
+      {/* GUIDE */}
       {showTutorial && (
-        <div className="absolute inset-0 bg-black/90 flex items-center justify-center z-50">
+        <div className="absolute inset-0 bg-black/80 flex items-center justify-center z-50">
 
-          <div className="bg-[#fffdfa] rounded-[3rem] w-full max-w-xl p-8 relative shadow-2xl">
+          <div className="bg-white rounded-3xl p-8 w-full max-w-xl relative">
 
             <button
               onClick={() => setShowTutorial(false)}
@@ -199,22 +263,14 @@ function AppInner() {
             </button>
 
             <h2 className="text-3xl font-black mb-4 flex items-center gap-2">
-              <ScrollText size={28} />
-              Royal Manual
+              <ScrollText size={28} /> Royal Manual
             </h2>
 
-            <p className="leading-relaxed text-gray-700">
-              Train Soongsoongyi for 7 days.  
-              Increase Intellect and Fluency.  
-              Reach the Grand Ball successfully.
+            <p className="leading-relaxed">
+              Train Soongsoongyi for 7 days.<br />
+              Increase Intellect and Fluency.<br />
+              Reach the Grand Ball.
             </p>
-
-            <button
-              onClick={() => setShowTutorial(false)}
-              className="mt-6 w-full bg-purple-700 text-white py-3 rounded-xl font-bold"
-            >
-              I ACCEPT
-            </button>
 
           </div>
         </div>
