@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import React, { useState } from "react";
 import {
-  Coins, Crown, HelpCircle, X, CheckCircle2, Music, MessageCircle, ChevronRight,
-  Landmark, BookOpen, GraduationCap, UtensilsCrossed, Waves, AlertTriangle,
-  RefreshCw, Sparkle, Trophy, Headphones, ScrollText, StarHalf
-} from 'lucide-react';
+  Crown, HelpCircle, X, Coins, BookOpen,
+  GraduationCap, UtensilsCrossed, Waves, ScrollText
+} from "lucide-react";
 
-// -------------------- Error Boundary --------------------
+// ---------------- Error Boundary ----------------
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
@@ -14,16 +13,13 @@ class ErrorBoundary extends React.Component {
   static getDerivedStateFromError() {
     return { hasError: true };
   }
-  componentDidCatch(err) {
-    console.error("App crashed:", err);
-  }
   render() {
     if (this.state.hasError) {
       return (
-        <div className="w-full h-screen bg-black flex items-center justify-center text-white">
+        <div className="w-full h-screen bg-black flex items-center justify-center">
           <button
-            className="bg-red-600 px-6 py-3 rounded-xl font-bold"
             onClick={() => window.location.reload()}
+            className="bg-red-600 text-white px-6 py-3 rounded-xl font-bold"
           >
             Reload
           </button>
@@ -34,85 +30,190 @@ class ErrorBoundary extends React.Component {
   }
 }
 
-// -------------------- MAIN APP --------------------
+// ---------------- Components ----------------
+
+const Soongyi = ({ size = "text-6xl" }) => (
+  <div className={`${size} select-none`}>
+    🐒<span className="text-sm">🎀</span>
+  </div>
+);
+
+function StatBar({ label, value, color }) {
+  return (
+    <div>
+      <div className="flex justify-between text-xs font-bold">
+        <span>{label}</span>
+        <span>{value}</span>
+      </div>
+      <div className="h-2 bg-gray-200 rounded">
+        <div
+          className={`h-full rounded ${color}`}
+          style={{ width: `${value}%` }}
+        />
+      </div>
+    </div>
+  );
+}
+
+// ---------------- Main App ----------------
 
 function AppInner() {
 
+  const [screen, setScreen] = useState("start");
   const [showTutorial, setShowTutorial] = useState(false);
+
+  const [stats] = useState({
+    intellect: 35,
+    fluency: 25,
+    energy: 70,
+    gold: 120
+  });
 
   return (
     <div className="w-full h-screen bg-[#f3e9dc] flex items-center justify-center">
 
-      {/* MAIN BOX */}
-      <div className="w-full max-w-5xl bg-white rounded-3xl shadow-xl flex flex-col overflow-hidden">
+      {/* MAIN FRAME */}
+      <div className="w-full max-w-5xl bg-[#fffdfa] rounded-[3rem] shadow-2xl flex flex-col overflow-hidden">
 
         {/* HEADER */}
-        <div className="h-14 bg-[#d4af37] flex items-center justify-between px-8">
-          <div className="flex items-center gap-3 text-white font-bold">
+        <div className="h-14 bg-[#d4af37] flex items-center justify-between px-6">
+
+          <div className="flex items-center gap-2 text-white font-black">
             <Crown size={22} />
             Royal Ball Deluxe
           </div>
 
           <button
             onClick={() => setShowTutorial(true)}
-            className="bg-white/20 hover:bg-white/40 px-5 py-2 rounded-full text-white text-sm font-bold flex items-center gap-2"
+            className="bg-white/20 px-4 py-1 rounded-full text-white flex items-center gap-2"
           >
-            <HelpCircle size={16} /> ROYAL GUIDE
+            <HelpCircle size={16} /> GUIDE
           </button>
+
         </div>
 
         {/* CONTENT */}
-        <div className="flex-1 flex items-center justify-center text-4xl font-bold">
-          정상 실행 테스트 화면
+        <div className="flex-1 bg-[#fdf5e6] p-6 flex flex-col">
+
+          {/* START SCREEN */}
+          {screen === "start" && (
+            <div className="flex-1 flex flex-col items-center justify-center gap-8">
+
+              <h1 className="text-5xl font-black text-purple-800">
+                Training Soongsoongyi
+              </h1>
+
+              <Soongyi size="text-9xl" />
+
+              <button
+                onClick={() => setScreen("play")}
+                className="bg-purple-700 text-white px-10 py-5 rounded-full text-xl font-black shadow-lg"
+              >
+                START PROTOCOL
+              </button>
+
+            </div>
+          )}
+
+          {/* PLAY SCREEN */}
+          {screen === "play" && (
+            <div className="flex flex-1 gap-6">
+
+              {/* LEFT PANEL */}
+              <div className="w-64 bg-white rounded-3xl p-4 shadow-xl flex flex-col gap-4">
+
+                <div className="text-center">
+                  <Soongyi size="text-5xl" />
+                </div>
+
+                <StatBar label="Intellect" value={stats.intellect} color="bg-indigo-600" />
+                <StatBar label="Fluency" value={stats.fluency} color="bg-emerald-600" />
+                <StatBar label="Energy" value={stats.energy} color="bg-rose-500" />
+
+                <div className="bg-yellow-100 p-3 rounded-xl flex justify-between font-bold">
+                  <Coins size={18} />
+                  ${stats.gold}
+                </div>
+
+                <button
+                  onClick={() => setScreen("start")}
+                  className="bg-red-600 text-white py-2 rounded-xl font-bold"
+                >
+                  Restart
+                </button>
+
+              </div>
+
+              {/* MAIN ACTION AREA */}
+              <div className="flex-1 bg-white rounded-3xl p-6 shadow-xl">
+
+                <h2 className="text-3xl font-black mb-4">
+                  Daily Training Menu
+                </h2>
+
+                <div className="grid grid-cols-2 gap-4">
+
+                  <div className="bg-[#fdf5e6] p-6 rounded-2xl shadow text-center">
+                    <BookOpen className="mx-auto mb-2" />
+                    <div className="font-bold">Elite Literature</div>
+                  </div>
+
+                  <div className="bg-[#fdf5e6] p-6 rounded-2xl shadow text-center">
+                    <GraduationCap className="mx-auto mb-2" />
+                    <div className="font-bold">Royal Rhetoric</div>
+                  </div>
+
+                  <div className="bg-[#fdf5e6] p-6 rounded-2xl shadow text-center">
+                    <UtensilsCrossed className="mx-auto mb-2" />
+                    <div className="font-bold">Imperial Cafe</div>
+                  </div>
+
+                  <div className="bg-[#fdf5e6] p-6 rounded-2xl shadow text-center">
+                    <Waves className="mx-auto mb-2" />
+                    <div className="font-bold">Celestial Spa</div>
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+          )}
+
         </div>
 
       </div>
 
-      {/* =================== FIXED TUTORIAL =================== */}
+      {/* ------------------ TUTORIAL ------------------ */}
 
       {showTutorial && (
-        <div className="absolute inset-0 bg-black/90 z-[400] flex items-center justify-center p-4 backdrop-blur-3xl">
+        <div className="absolute inset-0 bg-black/90 flex items-center justify-center z-50">
 
-          {/* 🔥 여기 div 빠져있던 거 FIX */}
-          <div className="bg-[#fffdfa] rounded-[5rem] border-[14px] border-[#c19a6b] w-full max-w-4xl p-8 relative shadow-2xl h-[90vh] flex flex-col border-double overflow-hidden">
+          <div className="bg-[#fffdfa] rounded-[3rem] w-full max-w-xl p-8 relative shadow-2xl">
 
             <button
               onClick={() => setShowTutorial(false)}
-              className="absolute top-6 right-6 p-3 text-gray-400 hover:text-rose-500"
+              className="absolute top-4 right-4"
             >
-              <X size={36} />
+              <X size={28} />
             </button>
 
-            <h2 className="text-4xl font-black text-[#8b4513] uppercase mb-8 border-b-4 border-[#c19a6b]/30 pb-4 flex items-center gap-6">
-              <ScrollText size={48} /> Royal Manual v9.8
+            <h2 className="text-3xl font-black mb-4 flex items-center gap-2">
+              <ScrollText size={28} />
+              Royal Manual
             </h2>
 
-            <div className="flex-1 overflow-y-auto space-y-8 px-6 text-xl text-gray-700">
-
-              <section>
-                <h3 className="text-2xl font-black mb-3">I. The Noble Social Ascent</h3>
-                <p>
-                  Esteemed Tutor, your noble mission is to refine Soongsoongyi into a paragon
-                  of the high imperial society within 7 suns.
-                </p>
-              </section>
-
-              <section>
-                <h3 className="text-2xl font-black mb-3">II. Imperial Qualifications</h3>
-                <ul className="list-disc pl-6">
-                  <li>Intellect 90+</li>
-                  <li>Fluency 90+</li>
-                  <li>Energy 50+</li>
-                </ul>
-              </section>
-
-            </div>
+            <p className="leading-relaxed text-gray-700">
+              Train Soongsoongyi for 7 days.  
+              Increase Intellect and Fluency.  
+              Reach the Grand Ball successfully.
+            </p>
 
             <button
               onClick={() => setShowTutorial(false)}
-              className="mt-4 bg-[#5d4037] text-white py-4 rounded-[3rem] font-black text-2xl shadow-xl hover:bg-black"
+              className="mt-6 w-full bg-purple-700 text-white py-3 rounded-xl font-bold"
             >
-              I ACCEPT YOUR OFFER!
+              I ACCEPT
             </button>
 
           </div>
@@ -123,7 +224,7 @@ function AppInner() {
   );
 }
 
-// -------------------- EXPORT --------------------
+// ---------------- Export ----------------
 
 export default function App() {
   return (
