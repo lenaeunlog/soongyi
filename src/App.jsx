@@ -1312,6 +1312,7 @@ function AppInner() {
 export default function App() {
   return (
     <ErrorBoundary>
+      const MAX_DAYS = 7;
       <AppInner />
     </ErrorBoundary>
   );
