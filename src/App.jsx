@@ -884,7 +884,7 @@ function AppInner() {
     <div className="w-full h-screen bg-[#f3e9dc] flex items-center justify-center font-serif overflow-hidden p-2 relative selection:bg-[#d4af37]/30 text-[#5d4037]">
       <audio ref={bgmRef} loop playsInline preload="none" style={{ display: 'none' }} />
 
-      <style>{`
+      <style>{
         @import url('https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Noto+Serif:wght@400;700&display=swap');
         @keyframes fall { 0% { transform: translateY(-5vh) rotate(0); opacity: 0; } 20% { opacity: 0.7; } 100% { transform: translateY(105vh) rotate(360deg); opacity: 0; } }
         .animate-fall { animation: fall linear infinite; }
