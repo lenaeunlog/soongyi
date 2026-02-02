@@ -1244,7 +1244,7 @@ function AppInner() {
 
       {showTutorial && (
         <div className="absolute inset-0 bg-black/98 z-[400] flex items-center justify-center p-4 backdrop-blur-3xl font-serif">
-          <div className="bg-[#fffdfa] rounded-[5rem] border-[14px] border-[#c19a6b] w-full max-w-4xl p-8 relative shadow-2xl h-[90vh] flex flex-col border-double overflow-hidden">
+          className="bg-[#fffdfa] rounded-[5rem] border-[14px] border-[#c19a6b] w-full max-w-4xl p-8 relative shadow-2xl h-[90vh] flex flex-col border-double overflow-hidden">
             <button onClick={() => { playSfx('click'); setShowTutorial(false); }} className="absolute top-6 right-6 p-3 text-gray-400 hover:text-rose-500 transition-all z-10"><X size={36} /></button>
             <h2 className="text-4xl md:text-5xl font-black text-[#8b4513] uppercase mb-8 border-b-4 border-[#c19a6b]/30 pb-4 flex items-center gap-6"><ScrollText size={48} /> Royal Manual v9.8</h2>
             <div className="flex-1 overflow-y-auto space-y-12 custom-scrollbar px-6 text-xl text-gray-700 leading-relaxed pb-8">
