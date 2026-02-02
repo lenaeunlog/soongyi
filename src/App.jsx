@@ -241,7 +241,7 @@ const ALL_QUESTIONS = {
     { id: 'w27', q: "He is much ___ than I am.", a: ["taller", "tall", "tallest"], correct: 0 }
   ]
 }
-
+const MAX_DAYS = 7;
 function AppInner() {
   const [screen, setScreen] = useState('start');
   const [day, setDay] = useState(1);
