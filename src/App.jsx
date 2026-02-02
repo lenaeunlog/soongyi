@@ -240,9 +240,7 @@ const ALL_QUESTIONS = {
     { id: 'w26', q: "Where ___ you yesterday morning?", a: ["were", "was", "are"], correct: 0 },
     { id: 'w27', q: "He is much ___ than I am.", a: ["taller", "tall", "tallest"], correct: 0 }
   ]
-};
-
-const MAX_DAYS = 7;
+}
 
 function AppInner() {
   const [screen, setScreen] = useState('start');
